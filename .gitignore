@@ -1,2 +1,2 @@
-!distribution-bundle
-!framework-extra-bundle
+distribution-bundle/*
+framework-extra-bundle/*

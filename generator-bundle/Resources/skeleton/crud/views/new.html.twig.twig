@@ -1,12 +1,15 @@
 {% block extends %}
-{{ "{% extends 'base.html.twig' %}" }}
+{{ "{% extends '@CPSMain/Tpl/principal.html.twig' %}" }}
+{{ "{% block stylesheet %}" }}
+{{ "{{ parent() }}" }}
+{{ "{% endblock %}" }}
 {% endblock extends %}
 
 {% block body %}
-{{ "{% block body %}" }}
+{{ "{% block cuerpo %}" }}
     <h1>{{ entity_singularized|capitalize }} creation</h1>
 
-    {{ '{{ form_start(form) }}' }}
+    {{ '{{ form_start(form, {\'attr\': {\'class\': \'form-horizontal\', \'autocomplete\': \'disabled\' }}) }}' }}
         {{ '{{ form_widget(form) }}' }}
         <input type="submit" value="Create" />
     {{ '{{ form_end(form) }}' }}
@@ -14,4 +17,58 @@
 {% set hide_edit, hide_delete = true, true %}
 {{ include('crud/views/others/record_actions.html.twig.twig') -}}
 {{ "{% endblock %}" }}
+
+{{ "{% block javascript %}" }}
+{{ "{{ parent() }}" }}
+{{ "<script type=\"text/javascript\">" }}
+{{ "$(document).on(\"ready\", _inicio);" }}
+{{ "/**" }}
+{{ " * [_inicio funcion inicio que se convoca cuando cargamos la pagina]" }}
+{{ " * @return {[type]} [description]" }}
+{{ " */" }}
+{{ "function _inicio() {" }}
+{{ "    $(\"classidGuardar\").on( \"click\", guardar );" }}
+{{ "}" }}
+{{ "" }}
+{{ "function guardar(e) {" }}
+{{ "    serializarFormObjectCPS();" }}
+{{ "    e.preventDefault();" }}
+{{ "    var form = $(\"classidFormulario\");" }}
+{{ "" }}
+{{ "    if(!form[0].checkValidity()){" }}
+{{ "        return false;" }}
+{{ "    }" }}
+{{ "" }}
+{{ "    var form_data = form.serializeObject();" }}
+{{ "    $('classidBotonGuardar').attr(\"disabled\",true);" }}
+{{ "    $.ajax({" }}
+{{ "        url: '{{ path('cps_main_covid_aislamiento_new') }}'," }}
+{{ "        type: 'POST'," }}
+{{ "        dataType: 'json'," }}
+{{ "        data: form_data," }}
+{{ "        success:function(data){" }}
+{{ "            if(data.status == 'error'){" }}
+{{ "                lobiError( data.message );" }}
+{{ "                $('classodBotonGuardar').attr(\"disabled\",false);" }}
+{{ "            }" }}
+{{ "            if(data.status == 'success'){" }}
+{{ "                lobiOk( data.message );" }}
+{{ "                $('classidBotonImprimir').removeAttr(\"disabled\");" }}
+{{ "                $('classidCampoOculto').attr(\"value\", data.id);" }}
+{{ "                $('classodBotonGuardar').attr(\"disabled\",true);" }}
+{{ "            }" }}
+{{ "        }" }}
+{{ "    });" }}
+{{ "}" }}
+{{ "" }}
+{{ "function imprimir() {" }}
+{{ "    var res = $('classidCampoOculto').val();" }}
+{{ "    var pdfLink = \"{{ path('rutaParaImprimir', {'id': 'textoParaCambiar'} ) }}\";" }}
+{{ "    pdfLink = pdfLink.replace(\"textoParaCambiar\", res);" }}
+{{ "    window.open( pdfLink );" }}
+{{ "    return false;" }}
+{{ "}" }}
+{{ "</script>" }}
+{{ "{% endblock %}" }}
+
 {% endblock body %}

@@ -1,9 +1,12 @@
 {% block extends %}
-{{ "{% extends 'base.html.twig' %}" }}
+{{ "{% extends '@CPSMain/Tpl/principal.html.twig' %}" }}
+{{ "{% block stylesheet %}" }}
+{{ "{{ parent() }}" }}
+{{ "{% endblock %}" }}
 {% endblock extends %}
 
 {% block body %}
-{{ "{% block body %}" }}
+{{ "{% block cuerpo %}" }}
     <h1>{{ entity_pluralized|capitalize }} list</h1>
 
     <table>
@@ -86,4 +89,18 @@
     {%- endif %}
 
 {{ "{% endblock %}" }}
+
+{{ "{% block javascript %}" }}
+{{ "{{ parent() }}" }}
+{{ "<script type=\"text/javascript\">" }}
+{{ "$(document).on(\"ready\", _inicio);" }}
+{{ "/**" }}
+{{ " * [_inicio funcion inicio que se convoca cuando cargamos la pagina]" }}
+{{ " * @return {[type]} [description]" }}
+{{ " */" }}
+{{ "function _inicio() {" }}
+{{ "}" }}
+{{ "</script>" }}
+{{ "{% endblock %}" }}
+
 {% endblock body %}

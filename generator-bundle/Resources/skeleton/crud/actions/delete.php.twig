@@ -47,4 +47,50 @@
             ->getForm()
         ;
     }
+
+    /**
+     * Print a {{ entity_singularized }} entity.
+     *
+     * @Route("/{{ '{' ~ identifier ~ '}' }}/print", name="{{ route_name_prefix }}_print")
+     * @Method({"GET", "POST"})
+     */
+    public function printAction(Request $request, {{ entity_class }} ${{ entity_singularized }})
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ut = $this->get('cps.util');
+
+        $path = $this->get('kernel')->getRootDir().'/..';
+        $_fechaInput = 'Fecha para la parte inferior';
+        $html = 'Texto con codigo de html para imprimir';
+
+        $pdf = new FPDI();
+        $pagecount = $pdf->setSourceFile($path."/web/docs/blankHeaderFooter.pdf");
+        $tppl = $pdf->importPage(1);
+        $title = 'CPS - H.E.Seton - Aislamiento Covid';
+        $pdf->SetTitle($title);
+        $pdf->SetAuthor('Ing. Oscar Choque Castro');
+        $pdf->AddPage('Portrait', 'Letter');
+        $pdf->useTemplate($tppl);
+        $pdf->SetMargins(25, 200, 25);
+        $pdf->Ln(30);
+        $pdf->SetFont('Helvetica','BU',14);
+        $pdf->Cell(0,10,"Titulo prinicipal",0,1,'C');
+        $pdf->Ln(4);
+        $pdf->SetFont('Helvetica','B',13);
+        $pdf->Cell(0,10,"Titulo secundario",0,1,'C');
+        $pdf->Ln(4);
+        $pdf->SetFont('Times','',14);
+        $pdf->WriteHTML($html);
+        $pdf->Ln(15);
+        $pdf->SetFont('Times','',14);
+        $pdf->Cell(0,10, 'Cochabamba, '.$_fechaInput,0,1,'R');
+        $pdf->Ln(40);
+        $width_cell=array(80,80);
+        $pdf->SetFont('Times','',14);
+        $pdf->Cell(80 ,5 , 'Nombre Izquierda',0,0,'C',false);
+        $pdf->Cell(80 ,5 , 'Nombre Derecha', 0, 1,'C',false);
+        $pdf->Cell(80 ,5 , 'Descripcion Izquierda',0,0,'C',false);
+        $pdf->Cell(80 ,5 , 'descripcion Derecha',0,1,'C',false);
+        $pdf->Output();
+    }
 {% endblock form %}

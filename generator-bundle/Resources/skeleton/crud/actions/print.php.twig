@@ -12,20 +12,15 @@
 {% endblock phpdoc_method_annotations %}
      */
 {% block method_definition %}
-    public function showAction({{ entity_class }} ${{ entity_singularized }})
+    public function printAction({{ entity_class }} ${{ entity_singularized }})
 {% endblock method_definition %}
     {
 {% block method_body %}
-{% if 'delete' in actions %}
-        $deleteForm = $this->createDeleteForm(${{ entity_singularized }});
-{% endif %}
-        
-        $var = $this->data;
-        $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
-        $var['delete_form'] = $deleteForm->createView();
 {% endblock method_body %}
 
 {% block method_return %}
-        return $this->render('@{{ namespace|replace({'\\': ''})|replace({'Bundle': ''}) }}/Default/{{ entity|lower|replace({'\\': '/'}) }}/show.html.twig', $var);
+        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/show.html.twig', array(
+            '{{ entity_singularized }}' => ${{ entity_singularized }},
+        ));
 {% endblock method_return %}
     }

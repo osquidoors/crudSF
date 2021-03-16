@@ -25,23 +25,34 @@
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $data = $request->get( "nombre_form_twig" );
+            ${{ entity_singularized ~ "Nuevo" }} = new {{ entity_singularized|capitalize }}( $data );
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist(${{ entity_singularized }});
+            $em->persist(${{ entity_singularized ~ "Nuevo" }});
             $em->flush();
 
             {% if 'show' in actions -%}
-                return $this->redirectToRoute('{{ route_name_prefix }}_show', array('{{ identifier }}' => ${{ entity_singularized }}->get{{ identifier|capitalize }}()));
+                $response = array(
+                'status' => "success",
+                'message' => "Paciente guardado correctamente",
+                'id' => $mainCovidAislamiento2->getId(),
+            );
+    
+            return new JsonResponse($response);
+                {# return $this->redirectToRoute('{{ route_name_prefix }}_show', array('{{ identifier }}' => ${{ entity_singularized }}->get{{ identifier|capitalize }}())); #}
             {%- else -%}
                 return $this->redirectToRoute('{{ route_name_prefix }}_index'));
             {%- endif %}
 
         }
+
+        $var = $this->data;
+        $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
+        $var['form'] = $form->createView();
 {% endblock method_body %}
 
 {% block method_return %}
-        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig', array(
-            '{{ entity_singularized }}' => ${{ entity_singularized }},
-            'form' => $form->createView(),
-        ));
+        return $this->render('@{{ namespace|replace({'\\': ''})|replace({'Bundle': ''}) }}/Default/{{ entity|lower|replace({'\\': '/'}) }}/new.html.twig', $var);
 {% endblock method_return %}
     }

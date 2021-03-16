@@ -29,13 +29,14 @@
 
             return $this->redirectToRoute('{{ route_name_prefix }}_edit', array('{{ identifier }}' => ${{ entity_singularized }}->get{{ identifier|capitalize }}()));
         }
+        
+        $var = $this->data;
+        $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
+        $var['edit_form'] = $editForm->createView();
+        $var['delete_form'] = $deleteForm->createView();
 {% endblock method_body %}
 
 {% block method_return %}
-        return $this->render('{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig', array(
-            '{{ entity_singularized }}' => ${{ entity_singularized }},
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ));
+        return $this->render('@{{ namespace|replace({'\\': ''})|replace({'Bundle': ''}) }}/Default/{{ entity|lower|replace({'\\': '/'}) }}/edit.html.twig', $var);
 {% endblock method_return %}
     }

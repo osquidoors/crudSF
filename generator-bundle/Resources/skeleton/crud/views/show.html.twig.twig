@@ -1,9 +1,12 @@
 {% block extends %}
-{{ "{% extends 'base.html.twig' %}" }}
+{{ "{% extends '@CPSMain/Tpl/principal.html.twig' %}" }}
+{{ "{% block stylesheet %}" }}
+{{ "{{ parent() }}" }}
+{{ "{% endblock %}" }}
 {% endblock extends %}
 
 {% block body %}
-{{ "{% block body %}" }}
+{{ "{% block cuerpo %}" }}
     <h1>{{ entity_singularized|capitalize }}</h1>
 
     <table>
@@ -49,4 +52,18 @@
 {% set hide_edit, hide_delete = false, false %}
 {{ include('crud/views/others/record_actions.html.twig.twig') -}}
 {{ "{% endblock %}" }}
+
+{{ "{% block javascript %}" }}
+{{ "{{ parent() }}" }}
+{{ "<script type=\"text/javascript\">" }}
+{{ "$(document).on(\"ready\", _inicio);" }}
+{{ "/**" }}
+{{ " * [_inicio funcion inicio que se convoca cuando cargamos la pagina]" }}
+{{ " * @return {[type]} [description]" }}
+{{ " */" }}
+{{ "function _inicio() {" }}
+{{ "}" }}
+{{ "</script>" }}
+{{ "{% endblock %}" }}
+
 {% endblock body %}

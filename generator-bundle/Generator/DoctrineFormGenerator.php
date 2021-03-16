@@ -61,8 +61,8 @@ class DoctrineFormGenerator extends Generator
         $entityClass = array_pop($parts);
 
         $this->className = $entityClass.'Type';
-        $dirPath = $bundle->getPath().'/Form';
-        $this->classPath = $dirPath.'/'.str_replace('\\', '/', $entity).'Type.php';
+        $dirPath = $bundle->getPath().'\\Form';
+        $this->classPath = $dirPath.'\\'.str_replace('\\', '/', $entity).'Type.php';
 
         if (!$forceOverwrite && file_exists($this->classPath)) {
             throw new \RuntimeException(sprintf('Unable to generate the %s form class as it already exists under the %s file', $this->className, $this->classPath));

@@ -9,8 +9,38 @@
 {{ "{% block cuerpo %}" }}
     <h1>{{ entity_singularized|capitalize }} creation</h1>
 
-    {{ '{{ form_start(form, {\'attr\': {\'class\': \'form-horizontal\', \'autocomplete\': \'disabled\' }}) }}' }}
-        {{ '{{ form_widget(form) }}' }}
+    {{ "{{ form_start(form, {'attr': {'class': 'form-horizontal', 'autocomplete': 'disabled' }}) }}" }}
+    {#    {{ '{{ form_widget(form) }}' }}    #}
+    <span class="section">Texto si se quiere poner</span>
+        <p>
+            {# 
+            una idea de como poner varios en una fila
+            <div class="row">
+                <label for="aaaaa" class="col-sm-3 col-sm-offset-2 control-label">Ingreso por:</label>
+                <div class="col-sm-6">
+                    <input type="radio" name="ingresoLugar" value="ingreEmer" required tabindex="3">
+                </div>
+                <label for="bbbbb" class="col-sm-1 control-label">Fecha</label>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control">
+                </div>
+                <label for="ccccc" class="col-sm-1 control-label">Hora</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control">
+                </div>
+            </div>
+
+             #}
+            {%- for field in fields -%} 
+            {{ "\n" }}
+            <div class="form-group">
+                {{  "{{ form_label(form." ~ field | first ~ ", null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}" }}
+                <div class="col-sm-10">
+                    {{ "{{ form_widget(form." ~ field | first ~ ", {'attr': {'class': 'form-control'}}) }} " }}
+                </div>
+            </div>
+        {%- endfor %}
+        </p>
         <input type="submit" value="Create" />
     {{ '{{ form_end(form) }}' }}
 
@@ -63,9 +93,9 @@
 {{ "" }}
 {{ "function imprimir() {" }}
 {{ "    var res = $('classidCampoOculto').val();" }}
-{{ "    var pdfLink = \"{{ path('rutaParaImprimir', {'id': 'textoParaCambiar'} ) }}\";" }}
-{{ "    pdfLink = pdfLink.replace(\"textoParaCambiar\", res);" }}
-{{ "    window.open( pdfLink );" }}
+{{ "    // var pdfLink = \"{ path('rutaParaImprimir', {'id': 'textoParaCambiar'} ) }\";" }}
+{{ "    // pdfLink = pdfLink.replace(\"textoParaCambiar\", res);" }}
+{{ "    // window.open( pdfLink );" }}
 {{ "    return false;" }}
 {{ "}" }}
 {{ "</script>" }}

@@ -6,6 +6,10 @@ namespace {{ namespace }}\Form{{ entity_namespace ? '\\' ~ entity_namespace : ''
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Symfony\Component\Form\Extension\Core\Type\ButtonType; 
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 {% endblock use_statements %}
 
 {% block class_definition %}
@@ -19,10 +23,63 @@ class {{ form_class }} extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /*
+        $builder
+        ->add('campoQueNoExisteEnLaBd', HiddenType::class, [
+            'data' => 'null',
+        ])
+        ->add('CampoQueExiste', TextType::class, [
+            'attr' => [
+                'placeholder' => 'texto que aparece en el input',
+                'class' => 'clase para agregar']
+            ] )
+        ->add('vacancyCurrency', ChoiceType::class, [
+            'choices' => [
+                    'USD' => 'USD',
+                    'RUB' => 'RUB',
+                ],
+                'expanded' => true,
+            ])
+
+https://stackoverflow.com/questions/57914944/how-to-make-radiobutton-in-symfony-form
+            So that is how i solved this, in template:
+
+ { form_start(form) }}
+ % form_theme form _self %}
+ % block choice_widget %}
+     % for child in form.vacancyCurrency %}
+         <div class="currency-label">
+             {- form_widget(child) -}}
+             {- form_label(child, null) -}}
+         </div>
+     % endfor %}
+ % endblock choice_widget %}
+ { form_end(form) }}
+in form class:
+
+->add('vacancyCurrency', ChoiceType::class, [
+    'choices' => [
+        'USD' => 'USD',
+        'RUB' => 'RUB',
+    ],
+    'expanded' => true,
+])
+and to make one of them active i set default data in model:
+
+public $vacancyCurrency = 'RUB';
+Update
+
+now i have interface for currency and use it in form class:
+
+->add('currency', ChoiceType::class, [
+    'label' => 'Валюта',
+    'choices' => \array_combine(CurrencyInterface::ALL, CurrencyInterface::ALL)
+])
+            */
         $builder
             {%- for field in fields -%}
 
-                ->add('{{ field }}')
+{{"\n            "}}->add('{{ field }}', TextType::class, [ 'attr' => ['placeholder' => 'Ingrese {{ field }}'] ])
 
             {%- endfor %};
     }

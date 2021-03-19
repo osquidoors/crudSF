@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
 {% block phpdoc_class_annotations %}
 {% if 'annotation' == format %}
- * @Route("{{ route_prefix|default('/') }}")
+ * @Route("{{ route_prefix|replace({'cps_':''})|replace({'_':'/'})|default('/') }}")
 {% endif %}
 {% endblock phpdoc_class_annotations %}
  */

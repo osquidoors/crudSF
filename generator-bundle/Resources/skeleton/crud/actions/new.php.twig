@@ -35,8 +35,8 @@
             {% if 'show' in actions -%}
                 $response = array(
                 'status' => "success",
-                'message' => "Paciente guardado correctamente",
-                'id' => $mainCovidAislamiento2->getId(),
+                'message' => "La informacion se guardo correctamente",
+                'id' => ${{ entity_singularized ~ "Nuevo" }}->getId(),
             );
     
             return new JsonResponse($response);
@@ -48,7 +48,7 @@
         }
 
         $var = $this->data;
-        $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
+        $var['{{ entity_singularized }}'] = ${{ entity_singularized }};
         $var['form'] = $form->createView();
 {% endblock method_body %}
 

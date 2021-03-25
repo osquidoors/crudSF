@@ -2,6 +2,7 @@
 {{ "{% extends '@CPSMain/Tpl/principal.html.twig' %}" }}
 {{ "{% block stylesheet %}" }}
 {{ "{{ parent() }}" }}
+{{ "<link rel=\"stylesheet\" type=\"text/css\" href=\"{{ asset('css/mensajes/lobibox.css') }}\"/>" }}
 {{ "{% endblock %}" }}
 {% endblock extends %}
 
@@ -9,11 +10,11 @@
 {{ "{% block cuerpo %}" }}
     <h1>{{ entity_singularized|capitalize }} creation</h1>
 
-    {{ "{{ form_start(form, {'attr': {'class': 'form-horizontal', 'autocomplete': 'disabled' }}) }}" }}
+    {{ "{{ form_start(form, {'attr': {'class': 'form-horizontal "~ route_name_prefix ~"', 'autocomplete': 'disabled' }}) }}" }}
     {#    {{ '{{ form_widget(form) }}' }}    #}
     <span class="section">Texto si se quiere poner</span>
         <p>
-            {# 
+            <!--
             una idea de como poner varios en una fila
             <div class="row">
                 <label for="aaaaa" class="col-sm-3 col-sm-offset-2 control-label">Ingreso por:</label>
@@ -29,8 +30,7 @@
                     <input type="text" class="form-control">
                 </div>
             </div>
-
-             #}
+            -->
             {%- for field in fields -%} 
             {{ "\n" }}
             <div class="form-group">
@@ -49,6 +49,8 @@
 {{ "{% endblock %}" }}
 
 {{ "{% block javascript %}" }}
+{{ "<script type=\"text/javascript\" src=\"{{ asset('js/mensaje/lobibox.min.js') }}\"></script>" }}
+{{ "<script type=\"text/javascript\" src=\"{{ asset('js/cps.js') }}\"></script>" }}
 {{ "{{ parent() }}" }}
 {{ "<script type=\"text/javascript\">" }}
 {{ "$(document).on(\"ready\", _inicio);" }}
@@ -62,37 +64,37 @@
 {{ "" }}
 {{ "function guardar(e) {" }}
 {{ "    serializarFormObjectCPS();" }}
-{{ "    e.preventDefault();" }}
-{{ "    var form = $(\"classidFormulario\");" }}
+{{ "    e.preventDefault();" }} 
+{{ "    var form = $(.'" ~ route_name_prefix ~ "');" }}
 {{ "" }}
 {{ "    if(!form[0].checkValidity()){" }}
 {{ "        return false;" }}
 {{ "    }" }}
 {{ "" }}
 {{ "    var form_data = form.serializeObject();" }}
-{{ "    $('classidBotonGuardar').attr(\"disabled\",true);" }}
+{{ "    $('#" ~ route_name_prefix ~ "_guardar').attr('disabled',true);" }}
 {{ "    $.ajax({" }}
-{{ "        url: '{{ path('cps_main_covid_aislamiento_new') }}'," }}
+{{ "        url: '{{ path('" ~ route_name_prefix ~ "_new') }}'," }}
 {{ "        type: 'POST'," }}
 {{ "        dataType: 'json'," }}
 {{ "        data: form_data," }}
 {{ "        success:function(data){" }}
 {{ "            if(data.status == 'error'){" }}
 {{ "                lobiError( data.message );" }}
-{{ "                $('classodBotonGuardar').attr(\"disabled\",false);" }}
+{{ "                $('classidBotonGuardar').attr('disabled',false);" }}
 {{ "            }" }}
 {{ "            if(data.status == 'success'){" }}
 {{ "                lobiOk( data.message );" }}
-{{ "                $('classidBotonImprimir').removeAttr(\"disabled\");" }}
-{{ "                $('classidCampoOculto').attr(\"value\", data.id);" }}
-{{ "                $('classodBotonGuardar').attr(\"disabled\",true);" }}
+{{ "                $('#" ~ route_name_prefix ~ "_imprimir').removeAttr('disabled');" }}
+{{ "                $('#" ~ route_name_prefix ~ "_hidde').attr('value', data.id);" }}
+{{ "                $('#" ~ route_name_prefix ~ "_guardar').attr('disabled',true);" }}
 {{ "            }" }}
 {{ "        }" }}
 {{ "    });" }}
 {{ "}" }}
 {{ "" }}
 {{ "function imprimir() {" }}
-{{ "    var res = $('classidCampoOculto').val();" }}
+{{ "    var res = $('#" ~ route_name_prefix ~ "_hidde').val();" }}
 {{ "    // var pdfLink = \"{ path('rutaParaImprimir', {'id': 'textoParaCambiar'} ) }\";" }}
 {{ "    // pdfLink = pdfLink.replace(\"textoParaCambiar\", res);" }}
 {{ "    // window.open( pdfLink );" }}

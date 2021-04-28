@@ -9,7 +9,7 @@
 {{ "{% block cuerpo %}" }}
     <h1>{{ entity_singularized|capitalize }} edit</h1>
 
-    {{ '{{ form_start(edit_form) }}' }}
+    {{ "{{ form_start(edit_form, {'attr': {'class': 'form-horizontal "~ route_name_prefix ~"', 'autocomplete': 'disabled' }}) }}" }}
         {{ '{{ form_widget(edit_form) }}' }}
         <input type="submit" value="Edit" />
     {{ '{{ form_end(edit_form) }}' }}

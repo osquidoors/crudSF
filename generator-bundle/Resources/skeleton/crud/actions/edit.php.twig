@@ -31,7 +31,7 @@
         }
         
         $var = $this->data;
-        $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
+        $var['{{ entity_pluralized }}'] = ${{ entity_singularized }};
         $var['edit_form'] = $editForm->createView();
         $var['delete_form'] = $deleteForm->createView();
 {% endblock method_body %}

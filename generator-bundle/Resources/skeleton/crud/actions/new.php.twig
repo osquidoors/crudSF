@@ -27,7 +27,10 @@
         $message = "";
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $request->get( "{{ route_name_prefix }}" );
+            {% set _tmp = route_name_prefix | split('_') %}
+            {% set _formName = _tmp[0] ~ '_' ~ _tmp[1] ~  'bundle_' ~ _tmp[1] ~ _tmp[2] %}
+
+            $data = $request->get( "{{ _formName }}" );
             // $data['variableParaAgregar'] = 'valorQueDeseoGuardarEnLaBaseDatos';
             ${{ entity_singularized ~ "Nuevo" }} = new {{ entity_singularized|capitalize }}( $data );
 
@@ -41,7 +44,6 @@
                 'message' => "La informacion se guardo correctamente",
                 'id' => ${{ entity_singularized ~ "Nuevo" }}->getId(),
             );
-    
             return new JsonResponse($response);
                 {# return $this->redirectToRoute('{{ route_name_prefix }}_show', array('{{ identifier }}' => ${{ entity_singularized }}->get{{ identifier|capitalize }}())); #}
             {# } {%- else -%} #}

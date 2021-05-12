@@ -13,7 +13,7 @@
 
         <p>
         {% for value in fields %}
-            {% if value['fieldName'] != "id" %}
+            {% if value["fieldName"] not in ["id", "activo", "observacion", "createdDate", "updatedDate"] %}
 
             <div class="form-group">
                 {{  "{{ form_label(form." ~ value | first ~ ", null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}" }}
@@ -25,7 +25,7 @@
         {% endfor %}
 
         </p>
-        <input type="submit" value="Create" />
+        <input type="submit" value="Create" id="{{ route_name_prefix }}_save" />
     {{ '{{ form_end(form) }}' }}
 
 {% set hide_edit, hide_delete = true, true %}
@@ -33,9 +33,9 @@
 {{ "{% endblock %}" }}
 
 {{ "{% block javascript %}" }}
+{{ "{{ parent() }}" }}
 {{ "<script type=\"text/javascript\" src=\"{{ asset('js/mensaje/lobibox.min.js') }}\"></script>" }}
 {{ "<script type=\"text/javascript\" src=\"{{ asset('js/cps.js') }}\"></script>" }}
-{{ "{{ parent() }}" }}
 {{ "<script type=\"text/javascript\">" }}
 {{ "$(document).on(\"ready\", _inicio);" }}
 {{ "/**" }}
@@ -43,10 +43,10 @@
 {{ " * @return {[type]} [description]" }}
 {{ " */" }}
 {{ "function _inicio() {" }}
-{{ "    $(\"classidGuardar\").on( \"click\", guardar );" }}
+{{ "    $('#" ~ route_name_prefix ~ "_save').on( 'click' ,formSave);" }}
 {{ "}" }}
 {{ "" }}
-{{ "function guardar(e) {" }}
+{{ "function formSave(e) {" }}
 {{ "    serializarFormObjectCPS();" }}
 {{ "    e.preventDefault();" }} 
 {{ "    var form = $('." ~ route_name_prefix ~ "');" }}
@@ -56,7 +56,7 @@
 {{ "    }" }}
 {{ "" }}
 {{ "    var form_data = form.serializeObject();" }}
-{{ "    $('#" ~ route_name_prefix ~ "_guardar').attr('disabled',true);" }}
+{{ "    $('#" ~ route_name_prefix ~ "_save').attr('disabled',true);" }}
 {{ "    $.ajax({" }}
 {{ "        url: '{{ path('" ~ route_name_prefix ~ "_new') }}'," }}
 {{ "        type: 'POST'," }}
@@ -65,13 +65,14 @@
 {{ "        success:function(data){" }}
 {{ "            if(data.status == 'error'){" }}
 {{ "                lobiError( data.message );" }}
-{{ "                $('classidBotonGuardar').attr('disabled',false);" }}
+{{ "                $('" ~ route_name_prefix ~ "_save').attr('disabled',false);" }}
 {{ "            }" }}
 {{ "            if(data.status == 'success'){" }}
 {{ "                lobiOk( data.message );" }}
+{{ "                setTimeout(function() { window.location.href = '{{ path('" ~ route_name_prefix ~ "_index') }}'; }, 1000);" }}
 {{ "                $('#" ~ route_name_prefix ~ "_imprimir').removeAttr('disabled');" }}
 {{ "                $('#" ~ route_name_prefix ~ "_hidde').attr('value', data.id);" }}
-{{ "                $('#" ~ route_name_prefix ~ "_guardar').attr('disabled',true);" }}
+{{ "                $('#" ~ route_name_prefix ~ "_save').attr('disabled',true);" }}
 {{ "            }" }}
 {{ "        }" }}
 {{ "    });" }}

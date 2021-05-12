@@ -79,9 +79,10 @@ now i have interface for currency and use it in form class:
         $builder
             {%- for field in fields -%}
 
-{{"\n            "}}->add('{{ field }}', TextType::class, [ 'attr' => ['placeholder' => 'Ingrese {{ field }}'] ])
+{{"\n            "}}->add('{{ field }}', TextType::class, [ 'attr' => ['placeholder' => '{{ field | capitalize }}?'] ])
 
-            {%- endfor %};
+            {%- endfor %}
+            ;
     }
     {%- endif -%}
 

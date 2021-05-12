@@ -51,6 +51,7 @@
         }
 
         $var = $this->data;
+        $var['h2Tit'] = 'Nuevo';
         $var['{{ entity_singularized }}'] = ${{ entity_singularized }};
         $var['form'] = $form->createView();
 {% endblock method_body %}

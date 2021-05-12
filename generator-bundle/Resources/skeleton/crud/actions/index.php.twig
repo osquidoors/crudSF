@@ -5,9 +5,9 @@
     {
         $this->data = [
             'tituloWeb' => '.: H.E.Seton - Cbba - C.P.S. :.',
-            'h3Tit' => 'Entidades',
-            'h2Tit' => 'Lista',
-            'h2Desc' => '-'
+            'h3Tit' => '{{ entity_pluralized |capitalize }}',
+            'h2Tit' => 'Tit secundario',
+            'h2Desc' => 'Descripcion'
         ];
     }
 
@@ -33,6 +33,8 @@
         ${{ entity_pluralized }} = $em->getRepository('{{ bundle }}:{{ entity }}')->findAll();
         $var = $this->data;
         $var['{{ entity_pluralized }}'] = ${{ entity_pluralized }};
+        $var['h2Tit'] = 'Lista';
+
 {% endblock method_body %}
 
 {% block method_return %}

@@ -8,31 +8,13 @@
 
 {% block body %}
 {{ "{% block cuerpo %}" }}
-    <h1>{{ entity_singularized|capitalize }} creation</h1>
-
-    {{ "{{ form_start(form, {'attr': {'class': 'form-horizontal "~ route_name_prefix ~"', 'autocomplete': 'disabled' }}) }}" }}
+    {{ "{{ form_start(form, {'attr': {'class': 'form-horizontal "~ route_name_prefix ~"', 'autocomplete': 'nope' }}) }}" }}
     {#    {{ '{{ form_widget(form) }}' }}    #}
-    <span class="section">Texto si se quiere poner</span>
+
         <p>
-            <!--
-            una idea de como poner varios en una fila
-            <div class="row">
-                <label for="aaaaa" class="col-sm-3 col-sm-offset-2 control-label">Ingreso por:</label>
-                <div class="col-sm-6">
-                    <input type="radio" name="ingresoLugar" value="ingreEmer" required tabindex="3">
-                </div>
-                <label for="bbbbb" class="col-sm-1 control-label">Fecha</label>
-                <div class="col-sm-4">
-                    <input type="text" class="form-control">
-                </div>
-                <label for="ccccc" class="col-sm-1 control-label">Hora</label>
-                <div class="col-sm-2">
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-            -->
         {% for value in fields %}
             {% if value['fieldName'] != "id" %}
+
             <div class="form-group">
                 {{  "{{ form_label(form." ~ value | first ~ ", null, {'label_attr': {'class': 'col-sm-2 control-label'}}) }}" }}
                 <div class="col-sm-10">
@@ -41,6 +23,7 @@
             </div>
             {% endif %}
         {% endfor %}
+
         </p>
         <input type="submit" value="Create" />
     {{ '{{ form_end(form) }}' }}
@@ -66,7 +49,7 @@
 {{ "function guardar(e) {" }}
 {{ "    serializarFormObjectCPS();" }}
 {{ "    e.preventDefault();" }} 
-{{ "    var form = $(.'" ~ route_name_prefix ~ "');" }}
+{{ "    var form = $('." ~ route_name_prefix ~ "');" }}
 {{ "" }}
 {{ "    if(!form[0].checkValidity()){" }}
 {{ "        return false;" }}
